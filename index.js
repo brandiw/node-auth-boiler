@@ -1,6 +1,9 @@
 /***********************
  * NODE MODULES
  ***********************/
+// Add in environment 
+require('dotenv').config()
+
 // Require needed modules
 let express = require('express')
 let flash = require('connect-flash')
@@ -27,7 +30,7 @@ app.use(express.urlencoded({ extended: false }))
 
 // Set up sessions
 app.use(session({
-    secret: 'any string is fine',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true
 }))
@@ -46,6 +49,7 @@ app.use((req, res, next) => {
  ***********************/
 // Controllers
 app.use('/auth', require('./controllers/auth'))
+app.use('/profile', require('./controllers/profile'))
 
 // Create a home page route
 app.get('/', (req, res) => {

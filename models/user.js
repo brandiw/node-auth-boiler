@@ -46,9 +46,19 @@ module.exports = (sequelize, DataTypes) => {
         pendingUser.password = hashedPassword
       }
     }
-  });
+  })
+
   user.associate = function(models) {
     // associations can be defined here
-  };
-  return user;
+  }
+
+  user.prototype.validPassword = function(typedInPassword) {
+    // Determine if the password typed in hashes to the same thing as the existing hash
+    let correctPassword = bcrypt.compareSync(typedInPassword, this.password)
+
+    // Return the (boolean) result of the comparison
+    return correctPassword
+  }
+
+  return user
 };

@@ -1,6 +1,7 @@
 // Node Modules/Variables
 let router = require('express').Router()
 let db = require('../models')
+let passport = require('../config/passportConfig')
 
 // Routes
 // GET /auth/login - this is a page that renders the login form
@@ -9,10 +10,12 @@ router.get('/login', (req, res) => {
 })
 
 // POST /auth/login - this is a place for the login form to post to
-router.post('/login', (req, res) => {
-    console.log('DATA', req.body)
-    res.send('Hello from the post route!')
-})
+router.post('/login', passport.authenticate('local', {
+    successFlash: 'Successful Login - Welcome Back!',
+    successRedirect: '/profile/user',
+    failureFlash: 'Invalid Credentials',
+    failureRedirect: '/auth/login'
+}))
 
 // GET /auth/signup - this is a page that renders the signup form
 router.get('/signup', (req, res) => {
@@ -20,8 +23,7 @@ router.get('/signup', (req, res) => {
 })
 
 // POST /auth/signup
-router.post('/signup', (req, res) => {
-    console.log('REQUEST BODY', req.body)
+router.post('/signup', (req, res, next) => {
     if (req.body.password !== req.body.password_verify) {
         // Send a message on why things didn't work
         req.flash('error', 'Passwords do not match!')
@@ -38,8 +40,13 @@ router.post('/signup', (req, res) => {
         .then(([user, wasCreated]) => {
             if (wasCreated) {
                 // Good - this was expected, they are actually NEW
-                // TODO: AUTO-LOGIN
-                res.send('YAY IT WORKED')
+                // AUTO-LOGIN with passport
+                passport.authenticate('local', {
+                    successFlash: 'Successful Login - Welcome!',
+                    successRedirect: '/profile/user',
+                    failureFlash: 'Invalid Credentials',
+                    failureRedirect: '/auth/login'
+                })(req, res, next)
             }
             else {
                 // Bad - this person actually already had an account (redirect them to login)
@@ -71,6 +78,15 @@ router.post('/signup', (req, res) => {
             }
         })
     }
+})
+
+router.get('/logout', (req, res) => {
+    // Remove user data from the session
+    req.logout()
+
+    // Tell them good bye and redirect to another page
+    req.flash('success', 'Bye bye! 👋')
+    res.redirect('/')
 })
 
 // Export (allow me to include this in another page)

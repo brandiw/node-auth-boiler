@@ -115,3 +115,57 @@ For example, if the new project doesn't need a birthday field, then delete it fr
 ```sh
 sequelize db:migrate
 ```
+
+### 8. Create a file for environment variables
+
+```sh
+touch .env
+```
+
+> Alternatively just create via text editor
+
+Include the following .env variables:
+
+* SESSION_SECRET - this a key for the session to use
+
+### 9. Run the server and make sure it works
+
+**with nodemon**
+
+```sh
+nodemon
+```
+
+**without nodemon**
+
+```sh
+node index.js
+```
+
+### 10. Delete the origin that points to the boilerplate repository
+
+Currently if we run this command:
+
+```sh
+git remote -v
+```
+
+It will show `origin` as being hooked up to the boilerplate repository. We want a fresh repository instead, so let's delete the origin remote:
+
+```sh
+git remote remove origin
+```
+
+### 11. Create an empty git repository
+
+Via the Github website. Follow directions as they show up when you create a new repository:
+
+```sh
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin <new_repo_link>
+git push origin master
+```
+
+**Happy developing!**

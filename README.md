@@ -59,3 +59,9 @@ This is a boilerplate for an Express app with local user authentication. It exis
 | GET | `/profile/guest/:id` | View user dashboard as guest (authorized user only) |
 
 ## Directions For Use
+
+### 1. Clone the repository, but with a different name
+
+```sh
+git clone <repo_link> <new_name>
+```

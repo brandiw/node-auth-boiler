@@ -62,6 +62,20 @@ This is a boilerplate for an Express app with local user authentication. It exis
 
 ### 1. Clone the repository, but with a different name
 
+Run the following command on the terminal:
+
 ```sh
 git clone <repo_link> <new_name>
+```
+
+**For example**
+
+```sh
+git clone git@github.com:brandiw/node-auth-boiler.git shiny-new-project
+```
+
+### 2. Install the modules from package.json
+
+```sh
+npm i
 ```
